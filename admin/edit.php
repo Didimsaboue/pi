@@ -121,7 +121,7 @@ mysqli_free_result($result);
 
         <div>
           <button type="submit" class="btn btn-success" name="submit">Modifier</button>
-          <a href="index.php" class="btn btn-danger">Annuler</a>
+          <a href="Etudiants.php" class="btn btn-danger">Annuler</a>
         </div>
       </form>
     </div>
