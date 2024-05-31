@@ -16,7 +16,7 @@ $etudiant = $_SESSION['etudiant'];
 
 </head>
 <body>
-    beinvennu <b><?=$etudiant['Nom']?></b>
+    beinvennu <b><?=$etudiant['Nom']?> <?=$etudiant['Prenom']?></b>
     <h1><a href="deconnexion.php">deconnecter</a></h1>
 </body>
 </html>
