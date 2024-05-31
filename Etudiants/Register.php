@@ -91,17 +91,56 @@
     </div>
   </div>
 </section>
-
-
+<?php
+$server = "localhost";
+$username = "root";
+$password = "";
+$db = "Bourssi";
+$conn = new mysqli($server, $username, $password, $db);
+  // Récupération des données du formulaire
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nom = $_POST['Nom'];
+    $prenom = $_POST['Prenom'];
+    $email = $_POST['Email'];
+    $matricule = $_POST['Matricule'];
+    $password = $_POST['password'];
+    if ($password == $_POST['password2']) {
+      // Requête SQL pour insérer les données dans la base de données
+      $sql = "INSERT INTO etudiants (Nom, Prenom, Matricule, Email, password) VALUES ('$nom', '$prenom', '$matricule', '$email', '$password')";
+      // Exécuter la requête SQL
+      if ($conn->query($sql) === TRUE) {
+        echo "<script>
+                Toastify({
+                    text: 'Inscription réussie!',
+                    duration: 3000,
+                    gravity: 'top',
+                    position: 'right',
+                    backgroundColor: '#4CAF50',
+                    stopOnFocus: true,
+                }).showToast();
+              </script>";
+      } else {
+        echo "Erreur lors de l'inscription : " . $conn->error;
+      }
+    } else {
+      echo "<script>
+            Toastify({
+                text: 'Les mots de passe ne correspondent pas!',
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                backgroundColor: '#FF0000',
+                stopOnFocus: true,
+            }).showToast();
+          </script>";
+    }
+  }
+  ?>
 <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/popper.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/main.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <script src="bootstrap.bundle.min.js"></script>
-
-        
-          
-        
+  <script src="bootstrap.bundle.min.js"></script> 
 </body>
 </html>

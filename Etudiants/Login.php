@@ -1,10 +1,5 @@
 
-<?php
-session_start();
-if(isset($_SESSION['etudiant'])){
-  header('location: Bourssi.php');
-}
-?>
+
 <!doctype html>
 <html lang="en">
 
