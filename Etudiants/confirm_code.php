@@ -36,6 +36,7 @@ if ($_POST["code"] == $_POST['code2']) {
                   stopOnFocus: true,
               }).showToast();
             </script>";
+            header("location:login.php");
     } else {
       echo "Erreur lors de l'inscription : " . $conn->error;
     }
