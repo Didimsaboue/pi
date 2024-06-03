@@ -37,8 +37,9 @@ if(isset($_POST['mp'])){
         header("Location: Bourssii.php");
         exit();
     } 
-    
-    else {
+  
+
+else {
 
         // Email and password not found in the database, display "Sorry"
        echo "<script> Swal.fire({
@@ -47,10 +48,15 @@ if(isset($_POST['mp'])){
             text: 'il y a un problème dans les identifiants!',
             footer: '<a href=\"Register.php\">vous avez pas encore inscrit? inscrivez vous</a>'
           });</script>";
+
           include("Login.php");
     }
+
 }
+
+
     $conn->close();
+
     ?>
 </body>
 </html>
