@@ -15,7 +15,7 @@ function sendMail(event,rand) {
       .then(res=>{
           console.log(res);
           sendCodeToPHP(params.message); 
-          window.location.href="verifier_code.php";
+          window.location.href="verifier_code.php?em="+params.email;
       })
       .catch(err=>console.log(err));
   }

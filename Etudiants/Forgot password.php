@@ -3,7 +3,8 @@
 <?php
     session_start();
     $_SESSION['rand'] = rand(100000,999999);
-
+    
+   
 ?>
 <head>
     <meta charset="utf-8">
@@ -107,11 +108,4 @@
 
 <!-- <script src="script.js"></script> -->
 </html>
-<?php
-if(isset($_POST["rec"])){
-    $email = $_POST["email"];
-    setcookie("email", $email, time() + 3600, "/"); // Le cookie expire dans 1 heure
-    header("location:confirm_code.php");
-    exit();
-}
-?>
+

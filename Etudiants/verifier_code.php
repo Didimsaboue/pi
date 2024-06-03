@@ -4,6 +4,8 @@
    session_start();
    if(isset($_SESSION['rand'])){
     $rand_code = $_SESSION['rand'];
+    $_SESSION["em"] = $_GET["em"];
+    
    }
    else{
     header('location: Forgot password.php');

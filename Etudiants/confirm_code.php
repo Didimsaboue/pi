@@ -1,11 +1,3 @@
-<?php
-if(isset($_COOKIE['email'])) {
-    $variable_recue = $_COOKIE['email'];
-    echo "La variable reçue est : " . $variable_recue;
-} else {
-    echo "Aucune variable n'a été transmise.";
-}
-?>
 
 
 <!doctype html>
@@ -22,6 +14,46 @@ if(isset($_COOKIE['email'])) {
     <title>recuperer la mot de passe</title>
 </head>
 <body>
+<?php
+session_start();
+$email = $_SESSION["em"];
+include('db_conn.php');
+if(isset($_POST["rec"])){
+    $code = $_POST["code"];
+   
+if ($_POST["code"] == $_POST['code2']) {
+    // Requête SQL pour insérer les données dans la base de données
+    $sql = "UPDATE etudiants set  password = '$code' where email = '$email';";
+    // Exécuter la requête SQL
+    if ($conn->query($sql) === TRUE) {
+      echo "<script>
+              Toastify({
+                  text: 'Inscription réussie!',
+                  duration: 3000,
+                  gravity: 'top',
+                  position: 'right',
+                  backgroundColor: '#4CAF50',
+                  stopOnFocus: true,
+              }).showToast();
+            </script>";
+    } else {
+      echo "Erreur lors de l'inscription : " . $conn->error;
+    }
+  } else {
+    echo "<script>
+          Toastify({
+              text: 'Les mots de passe ne correspondent pas!',
+              duration: 3000,
+              gravity: 'top',
+              position: 'right',
+              backgroundColor: '#FF0000',
+              stopOnFocus: true,
+          }).showToast();
+        </script>";
+  }
+}
+?>
+
     <section class="bg-light p-3 p-md-4 p-xl-5" style="margin-top: -30px;">
         <div class="container">
             <div class="row justify-content-center">
@@ -48,23 +80,23 @@ if(isset($_COOKIE['email'])) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <form class="form">
+                                        <form class="form" method="post">
                                             <div class="row gy-3 overflow-hidden">
                                                 <div class="col-12">
                                                     <div class="form-floating mb-3">
-                                                        <input type="number" class="form-control" name="code" id="verify-email" placeholder="name@example.com" required>
+                                                        <input type="text" class="form-control" name="code" id="verify-email" placeholder="name@example.com" required>
                                                         <label for="email" class="form-label">nouveau code</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-floating mb-3">
-                                                        <input type="number" class="form-control" name="code2" id="verify-email" placeholder="name@example.com" required>
+                                                        <input type="text"  class="form-control" name="code2" id="verify-email" placeholder="name@example.com" required>
                                                         <label for="email" class="form-label">confirmer votre nouveau code</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="d-grid">
-                                                        <button class="btn btn-lg" type="button"   name="rec" type="submit" style="background-color: #0CEF89;">envoyer</button>
+                                                        <button class="btn btn-lg"  name="rec"  style="background-color: #0CEF89;">envoyer</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -96,15 +128,6 @@ if(isset($_COOKIE['email'])) {
     <script src="js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
+
 <!-- <script src="script.js"></script> -->
 </html>
-
-<?php
-include("conn.php");
-if(isset($_POST["rec"])){
-    $code =$_POST["code"];
-    if($code == $_POST["code2"]){
-        
-    }
-}
-?>
