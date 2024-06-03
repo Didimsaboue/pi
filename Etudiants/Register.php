@@ -93,7 +93,7 @@
               <div class="row">
                 <div class="col-12">
                   <hr class="mt-5 mb-4 border-secondary-subtle">
-                  <p class="m-0 text-secondary text-center">Vous avez déjà un compte? <a href="Pratique sur form.php" class="link-success text-decoration-none">Se connecter</a></p>
+                  <p class="m-0 text-secondary text-center">Vous avez déjà un compte? <a href="Login.php" class="link-success text-decoration-none">Se connecter</a></p>
                 </div>
               </div>
             </div>
@@ -112,8 +112,12 @@
   <script src="bootstrap.bundle.min.js"></script>
 
   <?php
+$server = "localhost";
+$username = "root";
+$password = "";
+$db = "Bourssi";
 
-  include("db_conn.php");
+$conn = new mysqli($server, $username, $password, $db);
 
   // Récupération des données du formulaire
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
