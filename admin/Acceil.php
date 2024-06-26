@@ -230,7 +230,7 @@ mysqli_close($conn);
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Les etudiants</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo "$count Etudiant" ?></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo ($count + $counta + $countr) . " Etudiant"; ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i style="color:blue" class="fas fa-user-graduate student-icon fa-2x text-blue-300"></i>
