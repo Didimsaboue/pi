@@ -1,3 +1,22 @@
+<?php 
+include "db_conn.php";
+
+$sql = "SELECT COUNT(*) AS count FROM boursse";
+$result = mysqli_query($conn, $sql);
+
+if ($result) {
+    $row = mysqli_fetch_assoc($result);
+    $count = $row['count'];
+} else {
+    echo "Error: " . mysqli_error($conn);
+}
+
+mysqli_close($conn);
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,6 +81,16 @@
                     <i class='fas fa-user-graduate'></i>
                     <span>Etudiants</span></a>
             </li>
+            <li class="nav-item">
+        <a class="nav-link" href="Etudiants_a.php">
+          <i style="color: green;" class='fas fa-user-graduate'></i>
+          <span>Etudiants Accepter</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Etudiants_r.php">
+          <i style="color:red" class='fas fa-user-graduate'></i>
+          <span>Etudiants Refusee</span></a>
+      </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
@@ -126,7 +155,11 @@
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
+<?php 
 
+
+
+?>
                         
                             
 
@@ -174,8 +207,8 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Earnings (Monthly)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                                Les Boursses</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo "$count N-UM" ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>

@@ -61,7 +61,7 @@
                   </div>
                   <div class="col-12">
                     <div class="form-floating mb-3">
-                      <input type="number" class="form-control" name="Matricule" id="matricule" placeholder="Matricule" required>
+                      <input type="text" class="form-control" name="Matricule" id="matricule" placeholder="Matricule" required>
                       <label for="matricule" class="form-label">Matricule</label>
                     </div>
                   </div>

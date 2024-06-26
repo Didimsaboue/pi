@@ -187,6 +187,7 @@ include "db_conn.php"; // Include your database connection file
                 </div>';
           }
           ?>
+          
           <table class="table table-hover text-center" id="Crud">
             <thead class="table-dark">
               <tr>
@@ -195,16 +196,15 @@ include "db_conn.php"; // Include your database connection file
                 <th scope="col">Nom</th>
                 <th scope="col">Prenom</th>
                 <th scope="col">Email</th>
-                <th scope="col">Matricule</th>
-                <th scope="col">NNI</th>
-                <th scope="col">Depatement</th>
+                <th scope="col">Tel</th>
+                <th scope="col">Carte d'identite</th>
                 <th scope="col">Atestation</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
               <?php
-              $sql = "SELECT * FROM `etudiants`";
+              $sql = "SELECT * FROM `e_accepte`";
               $result = mysqli_query($conn, $sql);
               while ($row = mysqli_fetch_assoc($result)) {
               ?>
@@ -214,9 +214,8 @@ include "db_conn.php"; // Include your database connection file
                   <td><?php echo $row["Nom"] ?></td>
                   <td><?php echo $row["Prenom"] ?></td>
                   <td><?php echo $row["Email"] ?></td>
-                  <td><?php echo $row["Matricule"] ?></td>
+                  <td><?php echo $row["Tel"] ?></td>
                   <td><?php echo $row["NNI"] ?></td>
-                  <td><?php echo $row["Specialite"] ?></td>
                   <td><a href="../Etudiants/atestations/<?php echo $row["Atestation"] ?>" target="_blank"><i style="color:blue" class="fa-solid fa-eye fs-5"></i></a></td>
                   <td>
                     <button onclick="openModal(
@@ -227,30 +226,8 @@ include "db_conn.php"; // Include your database connection file
                       '<?php echo $row["Specialite"] ?>',
                       '<?php echo $row["Atestation"] ?>'
                       )" style="border:none;margin: 3px;"><i style="color:blue" class="fas fa-id-card fs-5"></i></button>
-                      <form action="reject_student.php" method="post" style="display:inline;">
-        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-        <input type="hidden" name="Nom" value="<?php echo $row['Nom']; ?>">
-        <input type="hidden" name="Prenom" value="<?php echo $row['Prenom']; ?>">
-        <input type="hidden" name="Email" value="<?php echo $row['Email']; ?>">
-        <input type="hidden" name="Matricule" value="<?php echo $row['Matricule']; ?>">
-        <input type="hidden" name="NNI" value="<?php echo $row['NNI']; ?>">
-        <input type="hidden" name="Specialite" value="<?php echo $row['Specialite']; ?>">
-        <input type="hidden" name="Atestation" value="<?php echo $row['Atestation']; ?>">
-        <input type="hidden" name="Photo" value="<?php echo $row['Photo']; ?>">
-        <button type="submit" style="border:none;margin: 3px; background: none;"><i style="color:red" class="fa-solid fa-user-graduate fs-5"></i></button>
-    </form>
-                      <form action="accept_student.php" method="post" style="display:inline;">
-        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-        <input type="hidden" name="Nom" value="<?php echo $row['Nom']; ?>">
-        <input type="hidden" name="Prenom" value="<?php echo $row['Prenom']; ?>">
-        <input type="hidden" name="Email" value="<?php echo $row['Email']; ?>">
-        <input type="hidden" name="Matricule" value="<?php echo $row['Matricule']; ?>">
-        <input type="hidden" name="NNI" value="<?php echo $row['NNI']; ?>">
-        <input type="hidden" name="Specialite" value="<?php echo $row['Specialite']; ?>">
-        <input type="hidden" name="Atestation" value="<?php echo $row['Atestation']; ?>">
-        <input type="hidden" name="Photo" value="<?php echo $row['Photo']; ?>">
-        <button type="submit" style="border:none;margin: 3px; background: none;"><i style="color:green" class="fa-solid fa-user-graduate fs-5"></i></button>
-    </form>
+                      <button style="border:none;margin: 3px" class="link-dark"><i style="color:red" class="fa-solid fa-user-graduate fs-5"></i> </button>
+                      <button style="border:none;margin: 3px" class="link-dark"><i style="color:green" class="fa-solid fa-user-graduate fs-5"></i> </button>
                   </td>
                 </tr>
               <?php
@@ -297,21 +274,6 @@ include "db_conn.php"; // Include your database connection file
 
     function closeModal() {
       document.getElementById('myModal').style.display = 'none';
-    }
-    function r() {
-<?php 
-  
-  
-  
-  
-  
-  
-  
-  
-  ?>
-
-
-
     }
   </script>
 

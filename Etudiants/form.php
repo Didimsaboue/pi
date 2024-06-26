@@ -54,6 +54,7 @@ if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 	} 
+	
 }
 
 if (isset($_FILES["atestation"]) && $_FILES["atestation"]["error"] == 0) {
@@ -166,7 +167,7 @@ if (isset($_POST['sb'])) {
 	          <li class="nav-item"><a href="Bourssii.php" class="nav-link"><span>Author</span></a></li>
 	          <li class="nav-item"><a href="Bourssii.php" class="nav-link"><span>Contact</span></a></li>
 	          <li class="nav-item"><a href="form.php" class="nav-link active"><span>Demande</span></a></li>
-			  <button class="btn btn-primary py-3 px-4" onclick="window.location.href='logout.php'">Se-Deconnectez</button>
+			  <button class="btn btn-primary py-3 px-4" onclick="window.location.href='deconnexion.php'">Se-Deconnectez</button>
 	        </ul>
 	      </div>
 	    </div>
@@ -318,7 +319,7 @@ if (isset($_POST['sb'])) {
     <div class="form-style-5">
 <form method="post"  enctype="multipart/form-data">
 	
-<fieldset <?php $sql = "SELECT Demande FROM etudiants WHERE id='$id'"; $result = $conn->query($sql); if ($result) { $row = $result->fetch_assoc(); if ($row['Demande'] !== null) {  $r = false ;?>   class="disabled" <?php } } ?> >
+<fieldset <?php $sql = "SELECT Demande FROM etudiants WHERE id='$id'"; $result = $conn->query($sql); if ($result) { $row = $result->fetch_assoc(); if ($row['Demande'] !== null && $row['Demande'] !== "" ) {  $r = false ;?>   class="disabled" <?php } } ?> >
 <legend><span class="number">I</span>Profil scholaire</legend>
 <input type="text" name="nom" value="<?php echo $nom ?>" disabled>
 <input type="text" name="matricule" placeholder="Matricule *" <?php  if($r==true){?> required <?php  } ?>>

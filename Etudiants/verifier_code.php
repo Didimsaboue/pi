@@ -92,7 +92,7 @@
             </div>
         </div>
     </section>
-    <script src="verifier_code.js"></script>
+    
 
     <script
       type="text/javascript"
@@ -107,8 +107,8 @@
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="verifier_code.js"></script>
 </body>
 
 <!-- <script src="script.js"></script> -->

@@ -4,7 +4,7 @@ function sendMail(event,rand) {
     }
       
     var params = {
-      name: "bourssi",
+      name: "Bourssi",
       email: document.getElementById("email").value,
       message: rand,
     };

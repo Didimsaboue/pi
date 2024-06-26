@@ -9,6 +9,10 @@ function verifier(rand_code){
 
   }
   else{
-      alert("code est incorecr !!!!")
+    Swal.fire({
+      icon: 'error',
+      title: 'Erreur',
+      text: 'Le code est incorrect !!!!'
+  });
   }
 }
