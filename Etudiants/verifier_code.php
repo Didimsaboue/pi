@@ -1,10 +1,15 @@
 <!doctype html>
 <html lang="en">
 <?php
-    session_start();
-    $_SESSION['rand'] = rand(100000,999999);
+   session_start();
+   if(isset($_SESSION['rand'])){
+    $rand_code = $_SESSION['rand'];
+    $_SESSION["em"] = $_GET["em"];
     
-   
+   }
+   else{
+    header('location: Forgot password.php');
+   }
 ?>
 <head>
     <meta charset="utf-8">
@@ -21,7 +26,7 @@
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 
 
-    <title>Mot de passe oubiler</title>
+    <title>recuperer la mot de passe</title>
 </head>
 
 <body>
@@ -47,34 +52,34 @@
                                                             <img src="Cnou.jpeg" alt="Supnum Logo" width="60" height="57">
                                                         </a>
                                                     </div>
-                                                    <h2 class="h4 text-center">Réinitialier le mot de passe</h2>
+                                                    <h2 class="h4 text-center">verification de code </h2>
                                                     <h3 class="fs-6 fw-normal text-secondary text-center m-0">Fournissez
-                                                        l'adresse email associée à votre compte pour récupérer votre mot
-                                                        de passe.</h3>
+                                                        le code que vous aves recu par votre email.</h3>
                                                 </div>
                                             </div>
                                         </div>
-                                        <form onsubmit="sendMail(event,<?= $_SESSION['rand'] ?>)" class="form" method="post" action="verifier_code.php">
+                                        <form class="form">
                                             <div class="row gy-3 overflow-hidden">
                                                 <div class="col-12">
                                                     <div class="form-floating mb-3">
-                                                        <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
-                                                        <label for="email" class="form-label">Email</label>
+                                                        <input type="number" class="form-control" name="code" id="verify-email" placeholder="name@example.com" required>
+                                                        <label for="email" class="form-label">code</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="d-grid">
-                                                        <button class="btn btn-lg"  name="rec" type="submit" style="background-color: #0CEF89;">envoyer une code de verification</button>
+                                                        <button class="btn btn-lg" type="button" onclick="verifier(<?= $rand_code ?>)"  name="rec" type="submit" style="background-color: #0CEF89;">envoyer</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
-                                        
                                               <div class="row">
                                             <div class="col-12">
                                                 <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-5">
                                                     <a href="Pratique sur form.php" class="link-secondary text-decoration-none">Login</a>
                                                     <a href="Register.php" class="link-secondary text-decoration-none">Register</a>
+                                                    <a href="Forgot password.php" class="link-secondary text-decoration-none">return</a>
+ 
                                                 </div>
                                             </div>
                                         </div>
@@ -87,7 +92,7 @@
             </div>
         </div>
     </section>
-    <script src="script.js"></script>
+    
 
     <script
       type="text/javascript"
@@ -102,10 +107,9 @@
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="verifier_code.js"></script>
 </body>
 
 <!-- <script src="script.js"></script> -->
 </html>
-

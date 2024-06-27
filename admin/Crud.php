@@ -239,7 +239,7 @@ include "db_conn.php"; // Include your database connection file
         <input type="hidden" name="Demande" value="<?php echo $row['Demande']; ?>">
         <input type="hidden" name="Atestation" value="<?php echo $row['Atestation']; ?>">
         <input type="hidden" name="Photo" value="<?php echo $row['Photo']; ?>">
-        <button type="submit" style="border:none;margin: 3px; background: none;"><i style="color:red" class="fa-solid fa-user-graduate fs-5"></i></button>
+        <button type="submit" style="border:none;margin: 3px; background: none;" onclick ="" ><i style="color:red" class="fa-solid fa-user-graduate fs-5"></i></button>
     </form>
                       <form action="accept_student.php" method="post" style="display:inline;">
         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">

@@ -8,7 +8,7 @@
 </head>
 <body>
     <?php
-    include("Login.php");
+    // include("Login.php");
 
     // Connection to the database
     $server = "localhost";
@@ -29,14 +29,21 @@ if(isset($_POST['mp'])){
     $sql = "SELECT * FROM etudiants WHERE Email='$email' AND `password`='$password'";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
-        $result = $result->fetch_assoc();
-        $_SESSION['etudiant'] = $result;
+        $row = $result->fetch_assoc();
+        session_start();
+         $_SESSION['etudiant'] = $row['id'];
+        $sql = "SELECT * FROM e_atande WHERE Email='$email' AND `password`='$password'";
+    $result = $conn->query($sql);
+       
+        $_SESSION['NNI'] = $row['NNI'];
+       
         // Email and password exist, redirect to Bourssi.html
-        echo "<script> window.location.href = 'Bourssi.php';</script>";
+        header("Location: Bourssii.php");
         exit();
     } 
-    
-    else {
+  
+
+else {
 
         // Email and password not found in the database, display "Sorry"
        echo "<script> Swal.fire({
@@ -45,9 +52,15 @@ if(isset($_POST['mp'])){
             text: 'il y a un problème dans les identifiants!',
             footer: '<a href=\"Register.php\">vous avez pas encore inscrit? inscrivez vous</a>'
           });</script>";
+
+          include("Login.php");
     }
+
 }
+
+
     $conn->close();
+
     ?>
 </body>
 </html>
