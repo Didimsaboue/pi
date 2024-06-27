@@ -1,3 +1,44 @@
+<?php 
+include "db_conn.php";
+
+$sql = "SELECT COUNT(*) AS count FROM etudiants";
+$result = mysqli_query($conn, $sql);
+
+if ($result) {
+    $row = mysqli_fetch_assoc($result);
+    $count = $row['count'];
+} else {
+    echo "Error: " . mysqli_error($conn);
+}
+
+
+$sql = "SELECT COUNT(*) AS count FROM e_accepte";
+$result = mysqli_query($conn, $sql);
+
+if ($result) {
+    $row = mysqli_fetch_assoc($result);
+    $counta = $row['count'];
+} else {
+    echo "Error: " . mysqli_error($conn);
+}
+
+
+$sql = "SELECT COUNT(*) AS count FROM e_refuse";
+$result = mysqli_query($conn, $sql);
+
+if ($result) {
+    $row = mysqli_fetch_assoc($result);
+    $countr = $row['count'];
+} else {
+    echo "Error: " . mysqli_error($conn);
+}
+
+mysqli_close($conn);
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,13 +60,23 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
+    <style>
+        
+        #pie-chart {
+      min-height: 350px;
+    }
+    #bar-chart {
+      height: 350px;
+      color: rgb(51, 90, 205);
+    }
+    
+    </style>
 </head>
 
 <body id="page-top">
 
     <!-- Page Wrapper -->
-    <div id="wrapper">
+    <div id="wrapper" style=" display:flex; flex-direction:space around">
 
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -62,6 +113,16 @@
                     <i class='fas fa-user-graduate'></i>
                     <span>Etudiants</span></a>
             </li>
+            <li class="nav-item">
+        <a class="nav-link" href="Etudiants_a.php">
+          <i style="color: green;" class='fas fa-user-graduate'></i>
+          <span>Etudiants Accepter</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Etudiants_r.php">
+          <i style="color:red" class='fas fa-user-graduate'></i>
+          <span>Etudiants Refusee</span></a>
+      </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
@@ -126,7 +187,11 @@
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
+<?php 
 
+
+
+?>
                         
                             
 
@@ -174,11 +239,12 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Earnings (Monthly)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                                Les etudiants</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo ($count + $counta + $countr) . " Etudiant"; ?></div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                            <i style="color:blue" class="fas fa-user-graduate student-icon fa-2x text-blue-300"></i>
+                                            <i style="color: blue;" class="fas fa-dollar-sign student-money-icon fa-2x text-blue-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -192,11 +258,13 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Earnings (Annual)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                                Les etudiants acceptees</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo "$counta etudiants" ?></div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        <i style="color: green;" class="fas fa-user-graduate student-money-icon fa-2x text-green-300"></i>
+                                        <i style="color: green;" class="fas fa-check-circle fa-2x"></i>
+
                                         </div>
                                     </div>
                                 </div>
@@ -204,33 +272,7 @@
                         </div>
 
                         <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
-                                            </div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
 
                         <!-- Pending Requests Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
@@ -239,20 +281,39 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                                Etudiants refusees</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo "$countr etudiants" ?></div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        <i style="color: red;" class="fas fa-user-graduate student-false-icon fa-2x text-red-300"></i>
+                                        <i style="color: red;" class="fas fa-times-circle student-false-icon fa-2x text-red-300"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="row" style="display : flex; justify-content: space-evenly; align-items: center; ">
+                       <!-- <div class="col-sm-6 text-center">
+                       <label class="label label-success">Pie Chart</label> -->
+                       <div id="pie-chart"></div>
+                       <!-- <div class="col-sm-6 text-center">
+                       <label class="label label-success">diagramme de bateaux</label> -->
+                       <div id="bar-chart"></div>
+                    </div>
 
                     <!-- Content Row -->
 
+                  
+
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+                    
                   
 
                         </div>
@@ -273,6 +334,10 @@
 
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
@@ -283,7 +348,38 @@
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+    <script>
+                        Morris.Donut({
+                          element: 'pie-chart',
+                          data: [
+                          {label: "accepte", value: <?php echo "$counta" ?>},
+                          {label: "en attende", value: <?php echo "$count"?>},
+                          {label: "refuser", value: <?php echo "$countr" ?>}
+        
+                          ],
+                          colors: ['#4CAF50', '#2196F3', '#F44336']
+                        });
 
+                         // Données pour le diagramme de bateaux
+    var data = [
+      { category: 'accepter', count: <?php echo"$counta" ?> },
+      { category: 'refuser', count: <?php  echo"$countr" ?> },
+      { category: 'en attende', count: <?php echo"$count" ?> },
+      
+    ];
+
+    // Initialisation du diagramme de bateaux
+    Morris.Bar({
+      element: 'bar-chart',
+      data: data,
+      xkey: 'category',
+      ykeys: ['count'],
+      labels: ['Nombre des etudients'],
+      barColors: ['rgb(51, 90, 205)'],
+      resize: true
+    });
+
+                    </script>
 </body>
 
 </html>
