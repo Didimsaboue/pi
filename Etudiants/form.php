@@ -162,6 +162,7 @@ if (isset($_POST['sb'])) {
 	          <li class="nav-item"><a href="Bourssii.php" class="nav-link"><span>Author</span></a></li>
 	          <li class="nav-item"><a href="Bourssii.php" class="nav-link"><span>Contact</span></a></li>
 	          <li class="nav-item"><a href="form.php" class="nav-link active"><span>Demande</span></a></li>
+	          <li class="nav-item"><a href="reponse.php" class="nav-link"><span>Reponse</span></a></li>
 			  <button class="btn btn-primary py-3 px-4" onclick="window.location.href='deconnexion.php'">Se-Deconnectez</button>
 	        </ul>
 	      </div>
