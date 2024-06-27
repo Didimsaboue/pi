@@ -31,7 +31,11 @@ if(isset($_POST['mp'])){
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         session_start();
-        $_SESSION['etudiant'] = $row['id'];
+         $_SESSION['etudiant'] = $row['id'];
+        $sql = "SELECT * FROM e_atande WHERE Email='$email' AND `password`='$password'";
+    $result = $conn->query($sql);
+       
+        $_SESSION['NNI'] = $row['NNI'];
        
         // Email and password exist, redirect to Bourssi.html
         header("Location: Bourssii.php");

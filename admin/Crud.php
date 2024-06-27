@@ -225,6 +225,7 @@ include "db_conn.php"; // Include your database connection file
                       '<?php echo $row["Photo"] ?>',
                       '<?php echo $row["NNI"] ?>',
                       '<?php echo $row["Specialite"] ?>',
+                      '<?php echo $row["Demande"] ?>',
                       '<?php echo $row["Atestation"] ?>'
                       )" style="border:none;margin: 3px;"><i style="color:blue" class="fas fa-id-card fs-5"></i></button>
                       <form action="reject_student.php" method="post" style="display:inline;">
@@ -235,6 +236,7 @@ include "db_conn.php"; // Include your database connection file
         <input type="hidden" name="Matricule" value="<?php echo $row['Matricule']; ?>">
         <input type="hidden" name="NNI" value="<?php echo $row['NNI']; ?>">
         <input type="hidden" name="Specialite" value="<?php echo $row['Specialite']; ?>">
+        <input type="hidden" name="Demande" value="<?php echo $row['Demande']; ?>">
         <input type="hidden" name="Atestation" value="<?php echo $row['Atestation']; ?>">
         <input type="hidden" name="Photo" value="<?php echo $row['Photo']; ?>">
         <button type="submit" style="border:none;margin: 3px; background: none;"><i style="color:red" class="fa-solid fa-user-graduate fs-5"></i></button>
@@ -247,6 +249,7 @@ include "db_conn.php"; // Include your database connection file
         <input type="hidden" name="Matricule" value="<?php echo $row['Matricule']; ?>">
         <input type="hidden" name="NNI" value="<?php echo $row['NNI']; ?>">
         <input type="hidden" name="Specialite" value="<?php echo $row['Specialite']; ?>">
+        <input type="hidden" name="Demande" value="<?php echo $row['Demande']; ?>">
         <input type="hidden" name="Atestation" value="<?php echo $row['Atestation']; ?>">
         <input type="hidden" name="Photo" value="<?php echo $row['Photo']; ?>">
         <button type="submit" style="border:none;margin: 3px; background: none;"><i style="color:green" class="fa-solid fa-user-graduate fs-5"></i></button>
@@ -283,7 +286,7 @@ include "db_conn.php"; // Include your database connection file
       $('#Crud').DataTable();
     });
 
-    function openModal(id, nomPrenom, photo, nni,  departement, attestation) {
+    function openModal(id, nomPrenom, photo, nni,  departement,demande, attestation) {
       document.getElementById('myModal').style.display = 'block';
       document.getElementById('modalContent').innerHTML = `
         <h2>${nomPrenom}</h2>
@@ -291,6 +294,7 @@ include "db_conn.php"; // Include your database connection file
         <p>ID: ${id}</p>
         <p>NNI: ${nni}</p>
         <p>Département: ${departement}</p>
+        <p>Démande: ${demande}</p>
         <p>Attestation: <a href="../Etudiants/atestations/${attestation}" target="_blank">Voir Attestation</a></p>
       `;
     }

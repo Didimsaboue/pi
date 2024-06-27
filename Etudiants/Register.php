@@ -7,22 +7,14 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="fonts/icomoon/style.css">
-
   <link rel="stylesheet" href="css/owl.carousel.min.css">
-
   <link rel="stylesheet" href="css/bootstrap.min.css">
-
   <link rel="stylesheet" href="css/style.css">
-
   <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.3/components/registrations/registration-7/assets/css/registration-7.css">
-  <title>Inscription</title>
-
-  <!-- Autres balises head... -->
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
-
+  <title>Inscription</title>
 </head>
 
 <body>
@@ -61,8 +53,8 @@
                   </div>
                   <div class="col-12">
                     <div class="form-floating mb-3">
-                      <input type="text" class="form-control" name="Matricule" id="matricule" placeholder="Matricule" required>
-                      <label for="matricule" class="form-label">Matricule</label>
+                      <input type="text" class="form-control" name="NNI" id="NNI" placeholder="NNI" required>
+                      <label for="NNI" class="form-label">NNI</label>
                     </div>
                   </div>
                   <div class="col-12">
@@ -103,7 +95,6 @@
     </div>
   </section>
 
-
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/popper.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
@@ -112,55 +103,76 @@
   <script src="bootstrap.bundle.min.js"></script>
 
   <?php
-$server = "localhost";
-$username = "root";
-$password = "";
-$db = "Bourssi";
+  $server = "localhost";
+  $username = "root";
+  $password = "";
+  $db = "Bourssi";
 
-$conn = new mysqli($server, $username, $password, $db);
+  $conn = new mysqli($server, $username, $password, $db);
 
-  // Récupération des données du formulaire
+  if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+  }
+
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nom = $_POST['Nom'];
     $prenom = $_POST['Prenom'];
     $email = $_POST['Email'];
-    $matricule = $_POST['Matricule'];
+    $matricule = $_POST['NNI'];
     $password = $_POST['password'];
+    $confirmPassword = $_POST['password2'];
 
-    if ($password == $_POST['password2']) {
-      // Requête SQL pour insérer les données dans la base de données
-      $sql = "INSERT INTO etudiants (Nom, Prenom, Matricule, Email, password) VALUES ('$nom', '$prenom', '$matricule', '$email', '$password')";
+    if ($password === $confirmPassword) {
+        // Your database operations remain the same up to the binding parameters
+        $conn->begin_transaction();
+        try {
+            $stmt = $conn->prepare("INSERT INTO etudiants (Nom, Prenom, NNI, Email, password) VALUES (?, ?, ?, ?, ?)");
+            if ($stmt) {
+                $stmt->bind_param("sssss", $nom, $prenom, $matricule, $email, $password); // Binding $password directly
+                $stmt->execute();
+                $stmt->close();
+            } else {
+                throw new Exception("Erreur lors de la préparation de la requête pour la table etudiants: " . $conn->error);
+            }
 
-      // Exécuter la requête SQL
-      if ($conn->query($sql) === TRUE) {
+            $stmt = $conn->prepare("INSERT INTO e_atande (Nom, Prenom, NNI, Email, password) VALUES (?, ?, ?, ?, ?)");
+            if ($stmt) {
+                $stmt->bind_param("sssss", $nom, $prenom, $matricule, $email, $password); // Binding $password directly
+                $stmt->execute();
+                $stmt->close();
+            } else {
+                throw new Exception("Erreur lors de la préparation de la requête pour la table e_atande: " . $conn->error);
+            }
+
+            $conn->commit();
+            echo "<script>
+                    Toastify({
+                        text: 'Inscription réussie!',
+                        duration: 3000,
+                        gravity: 'top',
+                        position: 'right',
+                        backgroundColor: '#4CAF50',
+                        stopOnFocus: true,
+                    }).showToast();
+                </script>";
+        } catch (Exception $e) {
+            $conn->rollback();
+            echo "Erreur lors de l'inscription : " . $e->getMessage();
+        }
+    } else {
         echo "<script>
                 Toastify({
-                    text: 'Inscription réussie!',
+                    text: 'Les mots de passe ne correspondent pas!',
                     duration: 3000,
                     gravity: 'top',
                     position: 'right',
-                    backgroundColor: '#4CAF50',
+                    backgroundColor: '#FF0000',
                     stopOnFocus: true,
                 }).showToast();
-              </script>";
-      } else {
-        echo "Erreur lors de l'inscription : " . $conn->error;
-      }
-    } else {
-      echo "<script>
-            Toastify({
-                text: 'Les mots de passe ne correspondent pas!',
-                duration: 3000,
-                gravity: 'top',
-                position: 'right',
-                backgroundColor: '#FF0000',
-                stopOnFocus: true,
-            }).showToast();
-          </script>";
+            </script>";
     }
-  }
-  ?>
-
+}
+?>
 </body>
 
 </html>

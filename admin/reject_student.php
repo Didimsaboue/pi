@@ -9,10 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $Matricule = $_POST['Matricule'];
     $NNI = $_POST['NNI'];
     $Specialite = $_POST['Specialite'];
+    $Demande = $_POST['Demande'];
     $Atestation = $_POST['Atestation'];
     $Photo = $_POST['Photo'];
 
-    $sql = "INSERT INTO e_refuse (Nom, Prenom, Email, Matricule, NNI, Specialite, Attestation,Photo) VALUES ( '$Nom', '$Prenom', '$Email', '$Matricule', '$NNI', '$Specialite', '$Atestation' , '$Photo' )";
+    $sql = "INSERT INTO e_refuse (Nom, Prenom, Email, Matricule, NNI, Specialite, Demande, Attestation,Photo) VALUES ( '$Nom', '$Prenom', '$Email', '$Matricule', '$NNI', '$Specialite',' $Demande', '$Atestation' , '$Photo' )";
 
     if (mysqli_query($conn, $sql)) {
         header('Location: Etudiants.php?msg=Etudiant refusé avec succès');

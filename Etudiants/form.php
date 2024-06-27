@@ -15,11 +15,12 @@ if (!isset($_SESSION['etudiant'])) {
     exit();
 }
 $id=$_SESSION['etudiant'];
+$NNI=$_SESSION['NNI'];
 
 // Assuming $conn is your MySQLi connection object and $id is the student's id
 
 // Construct the SQL query
-$sql = "SELECT Nom FROM etudiants WHERE id = $id";
+$sql = "SELECT Nom FROM e_atande WHERE NNI = $NNI";
 
 // Execute the query
 $result = $conn->query($sql);
@@ -111,15 +112,9 @@ if (isset($_FILES["cartre"]) && $_FILES["cartre"]["error"] == 0) {
 	}
 }
 if (isset($_POST['sb'])) {
-	$matricule =      $_POST['matricule'];
-	$sql = "UPDATE etudiants SET Matricule = '$matricule' WHERE id = '$id'";
-	if ($conn->query($sql) === TRUE) {
-		$ok='ok';
-	} else {
-		echo "Error: " . $sql . "<br>" . $conn->error;
-	}
+	
 	$Demande=$_POST['Demande'];
-	$sql = "UPDATE etudiants SET Demande = '$Demande' WHERE id = '$id'";
+	$sql = "UPDATE etudiants SET Demande = '$Demande' WHERE NNI = '$NNI'";
 	if ($conn->query($sql) === TRUE) {
 		$ok='ok';;
 	} else {
@@ -318,8 +313,62 @@ if (isset($_POST['sb'])) {
    
     <div class="form-style-5">
 <form method="post"  enctype="multipart/form-data">
-	
-<fieldset <?php $sql = "SELECT Demande FROM etudiants WHERE id='$id'"; $result = $conn->query($sql); if ($result) { $row = $result->fetch_assoc(); if ($row['Demande'] !== null && $row['Demande'] !== "" ) {  $r = false ;?>   class="disabled" <?php } } ?> >
+<?php
+// Assuming $conn is your database connection object
+
+// Ensure $id and $NNI are set and not empty
+if (isset($id) && isset($NNI)) {
+    // Query to fetch Demande from etudiants table
+    $sql = "SELECT Demande FROM etudiants WHERE id='$id'";
+    $result = $conn->query($sql);
+
+    if ($result) {
+        $row = $result->fetch_assoc();
+
+        // Check if $NNI exists in e_accepte table
+        $sql_e_accepte = "SELECT COUNT(*) AS count FROM e_accepte WHERE NNI='$NNI'";
+        $result_e_accepte = $conn->query($sql_e_accepte);
+
+        if ($result_e_accepte) {
+            $row_e_accepte = $result_e_accepte->fetch_assoc();
+            if ($row_e_accepte['count'] > 0) {
+                $r = false; // Set $r to false if NNI exists in e_accepte
+            } else {
+                // Check conditions if NNI does not exist in e_accepte
+                if (isset($row['Demande']) && ($row['Demande'] !== null && $row['Demande'] !== "")) {
+                    $r = false; // Set $r to false if Demande is not empty
+                } else {
+                    // Check if NNI exists in e_refuse table
+                    $sql_e_refuse = "SELECT NNI FROM e_refuse WHERE NNI='$NNI'";
+                    $result_e_refuse = $conn->query($sql_e_refuse);
+                    if ($result_e_refuse && $result_e_refuse->num_rows > 0) {
+                        $r=false; // Set $z to true if NNI exists in e_refuse
+                    }
+                }
+            }
+        } else {
+            // Handle query error for e_accepte table
+            echo "Error fetching e_accepte data: " . $conn->error;
+            // Optionally set $r or handle errors as appropriate
+        }
+    } else {
+        // Handle query error for etudiants table
+        echo "Error fetching etudiants data: " . $conn->error;
+        // Optionally set $r or handle errors as appropriate
+    }
+} else {
+    // Handle case where $id or $NNI is not set
+    echo "ID or NNI is not set.";
+    // Optionally set $r or handle errors as appropriate
+}
+
+?>
+
+
+<fieldset <?php if ($r==false) { ?> class="disabled" <?php }   ?> >
+
+
+
 <legend><span class="number">I</span>Profil scholaire</legend>
 <input type="text" name="nom" value="<?php echo $nom ?>" disabled>
 <input type="text" name="matricule" placeholder="Matricule *" <?php  if($r==true){?> required <?php  } ?>>
@@ -383,7 +432,8 @@ if (isset($_POST['sb'])) {
 </optgroup>
 </select>
 </fieldset>
-<fieldset <?php $sql = "SELECT Statut FROM etudiants WHERE id='$id'"; $result = $conn->query($sql); if ($result) { $row = $result->fetch_assoc(); if ($row['Statut'] !== "oui") {  $p = false ;?> class="disabled" <?php } } ?>>
+<fieldset <?php $sql = "SELECT NNI FROM e_accepte WHERE NNI='$NNI'"; $result = $conn->query($sql); if ($result && $result->num_rows == 0) { $p = false; ?> class="disabled" <?php }?>>
+
 <legend><span class="number">II</span>Finaliser votre profil scholaire</legend>
 <!--Image-->
 <div>

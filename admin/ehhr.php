@@ -9,15 +9,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $Matricule = $_POST['Matricule'];
     $NNI = $_POST['NNI'];
     $Specialite = $_POST['Specialite'];
-    $Demande = $_POST['Demande'];
     $Atestation = $_POST['Atestation'];
     $Photo = $_POST['Photo'];
 
-    $sql = "INSERT INTO e_accepte (Nom, Prenom, Email, Matricule, NNI, Specialite, Attestation,Demande,Photo) VALUES ('$Nom', '$Prenom', '$Email', '$Matricule', '$NNI', '$Specialite', '$Atestation','$Demande', '$Photo')";
+    $sql = "INSERT INTO e_refuse (Nom, Prenom, Email, Matricule, NNI, Specialite, Attestation,Photo) VALUES ('$Nom', '$Prenom', '$Email', '$Matricule', '$NNI', '$Specialite', '$Atestation', '$Photo')";
 
     if (mysqli_query($conn, $sql)) {
-        header('Location: Etudiants.php?msg=Etudiant accepté avec succès');
-        $sql = "DELETE FROM etudiants WHERE id=$id";
+        header('Location: Etudiants_a.php?msg=Etudiant accepté avec succès');
+        $sql = "DELETE FROM e_accepte WHERE id=$id";
         mysqli_query($conn, $sql);
     } else {
         echo 'Erreur: ' . mysqli_error($conn);
