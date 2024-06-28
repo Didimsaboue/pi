@@ -1,4 +1,6 @@
-<?php 
+<?php
+session_start();
+if(isset($_SESSION['name'])){ 
 include "db_conn.php";
 
 $sql = "SELECT COUNT(*) AS count FROM etudiants";
@@ -64,12 +66,21 @@ mysqli_close($conn);
         
         #pie-chart {
       min-height: 350px;
+      background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    
     }
     #bar-chart {
       height: 350px;
       color: rgb(51, 90, 205);
-    }
+      background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
     
+    
+    }
+   
     </style>
 </head>
 
@@ -125,34 +136,34 @@ mysqli_close($conn);
       </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="charts.php">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Charts</span></a>
-            </li>
+            </li> -->
             <li class="nav-item">
-                <a class="nav-link" href="deconnexion.html">
+                <a class="nav-link" href="deconnexion.php">
                     <i class="fas fa-door-open"></i>
                     <span>Deconnexion</span></a>
             </li>
 
             <!-- Divider -->
-            <hr class="sidebar-divider">
+            <!-- <hr class="sidebar-divider"> -->
 
             <!-- Heading -->
-            <div class="sidebar-heading">
+            <!-- <div class="sidebar-heading">
                 Problem ?
-            </div>
+            </div> -->
 
             <!-- Nav Item - Pages Collapse Menu -->
             
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="Help.html">
                     <i class="fa fa-question-circle"></i>
                     <span>Nous-contactez</span></a>
-            </li>
+            </li> -->
 
            
 
@@ -299,10 +310,10 @@ mysqli_close($conn);
                     <div class="row" style="display : flex; justify-content: space-evenly; align-items: center; ">
                        <!-- <div class="col-sm-6 text-center">
                        <label class="label label-success">Pie Chart</label> -->
-                       <div id="pie-chart"></div>
+                       <div id="pie-chart" class="pie"></div>
                        <!-- <div class="col-sm-6 text-center">
                        <label class="label label-success">diagramme de bateaux</label> -->
-                       <div id="bar-chart"></div>
+                       <div id="bar-chart" class="bar"></div>
                     </div>
 
                     <!-- Content Row -->
@@ -383,3 +394,10 @@ mysqli_close($conn);
 </body>
 
 </html>
+
+<?php
+}
+else{
+  header("location:login.php");
+}
+?>

@@ -1,4 +1,7 @@
 <?php
+session_start();
+if(isset($_SESSION['name'])){
+
 include "db_conn.php"; // Include your database connection file
 ?>
 
@@ -112,34 +115,32 @@ include "db_conn.php"; // Include your database connection file
       </li>
 
       <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" href="charts.php">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Charts</span></a>
-      </li>
+      </li> -->
       <li class="nav-item">
-        <a class="nav-link" href="deconnexion.html">
+        <a class="nav-link" href="deconnexion.php">
           <i class="fas fa-door-open"></i>
           <span>Deconnexion</span></a>
       </li>
 
       <!-- Divider -->
-      <hr class="sidebar-divider">
+      <!-- <hr class="sidebar-divider"> -->
 
       <!-- Heading -->
-      <div class="sidebar-heading">
-        Problem ?
-      </div>
+    
 
       <!-- Nav Item - Charts -->
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" href="Help.html">
           <i class="fa fa-question-circle"></i>
           <span>Nous-contactez</span></a>
-      </li>
+      </li> -->
 
       <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
+      <!-- <hr class="sidebar-divider d-none d-md-block"> -->
 
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
@@ -204,6 +205,7 @@ include "db_conn.php"; // Include your database connection file
             </thead>
             <tbody>
               <?php
+              $i=0;
               $sql = "SELECT * FROM `etudiants`";
               $result = mysqli_query($conn, $sql);
               while ($row = mysqli_fetch_assoc($result)) {
@@ -213,7 +215,7 @@ include "db_conn.php"; // Include your database connection file
                   <td><img src="../Etudiants/images/<?php echo $row["Photo"] ?>" alt="" width="50px"></td>
                   <td><?php echo $row["Nom"] ?></td>
                   <td><?php echo $row["Prenom"] ?></td>
-                  <td><?php echo $row["Email"] ?></td>
+                  <td><?php $row['Email'] ?></td>
                   <td><?php echo $row["Matricule"] ?></td>
                   <td><?php echo $row["NNI"] ?></td>
                   <td><?php echo $row["Specialite"] ?></td>
@@ -228,24 +230,24 @@ include "db_conn.php"; // Include your database connection file
                       '<?php echo $row["Demande"] ?>',
                       '<?php echo $row["Atestation"] ?>'
                       )" style="border:none;margin: 3px;"><i style="color:blue" class="fas fa-id-card fs-5"></i></button>
-                      <form action="reject_student.php" method="post" style="display:inline;">
-        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                      <form action="reject_student.php"  method="post" style="display:inline;">
+        <input type="hidden" name="id"  value="<?php echo $row['id']; ?>">
         <input type="hidden" name="Nom" value="<?php echo $row['Nom']; ?>">
         <input type="hidden" name="Prenom" value="<?php echo $row['Prenom']; ?>">
-        <input type="hidden" name="Email" value="<?php echo $row['Email']; ?>">
+        <input type="hidden" name="Email"   value="<?php echo $row['Email']; ?>">
         <input type="hidden" name="Matricule" value="<?php echo $row['Matricule']; ?>">
         <input type="hidden" name="NNI" value="<?php echo $row['NNI']; ?>">
         <input type="hidden" name="Specialite" value="<?php echo $row['Specialite']; ?>">
         <input type="hidden" name="Demande" value="<?php echo $row['Demande']; ?>">
         <input type="hidden" name="Atestation" value="<?php echo $row['Atestation']; ?>">
         <input type="hidden" name="Photo" value="<?php echo $row['Photo']; ?>">
-        <button type="submit" style="border:none;margin: 3px; background: none;" onclick ="" ><i style="color:red" class="fa-solid fa-user-graduate fs-5"></i></button>
+        <button type="submit"  style="border:none;margin: 3px; background: none;" ><i style="color:red" class="fa-solid fa-user-graduate fs-5"></i></button>
     </form>
                       <form action="accept_student.php" method="post" style="display:inline;">
         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
         <input type="hidden" name="Nom" value="<?php echo $row['Nom']; ?>">
         <input type="hidden" name="Prenom" value="<?php echo $row['Prenom']; ?>">
-        <input type="hidden" name="Email" value="<?php echo $row['Email']; ?>">
+        <input type="hidden" name="Email" id="email" value="<?php echo $row['Email']; ?>">
         <input type="hidden" name="Matricule" value="<?php echo $row['Matricule']; ?>">
         <input type="hidden" name="NNI" value="<?php echo $row['NNI']; ?>">
         <input type="hidden" name="Specialite" value="<?php echo $row['Specialite']; ?>">
@@ -257,6 +259,7 @@ include "db_conn.php"; // Include your database connection file
                   </td>
                 </tr>
               <?php
+              $i++;
               }
               ?>
             </tbody>
@@ -280,7 +283,16 @@ include "db_conn.php"; // Include your database connection file
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
   <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap4.js"></script>
-
+  <script src="script.js"></script>
+  <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+      (function () {
+        emailjs.init("FqAcklLOm6f0woady");
+      })();
+    </script>
   <script>
     $(document).ready(function() {
       $('#Crud').DataTable();
@@ -322,3 +334,9 @@ include "db_conn.php"; // Include your database connection file
 </body>
 
 </html>
+<?php
+}
+else{
+  header("location:login.php");
+}
+?>

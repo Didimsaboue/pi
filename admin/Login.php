@@ -2,7 +2,7 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
-
+    
     if ($username == "Admin" && $password == "AdmiN") {
         session_start();
         $_SESSION['name'] = $username;
@@ -213,7 +213,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <i class="login__icon fas fa-lock"></i>
                     <input type="password" class="login__input" name="password" placeholder="Mot de passe">
                 </div>
-                <button class="button login__submit" type="submit">
+                <button class="button login__submit" type="submit" name="st">
                     <span class="button__text">Log In </span>
                     <i class="button__icon fas fa-chevron-right"></i>
                 </button>                
@@ -230,8 +230,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>        
     </div>
 </div>
-<?php 
-if ($username !== "Admin" && $password !== "AdmiN") {
+<?php
+if(isset($_POST['st'])){
+    if ($username !== "Admin" && $password !== "AdmiN") {
         echo "<script>
             Swal.fire({
                 icon: 'error',
@@ -240,6 +241,8 @@ if ($username !== "Admin" && $password !== "AdmiN") {
             });
         </script>";
     }
+} 
+
 
 ?>
 <!-- FontAwesome Icons -->

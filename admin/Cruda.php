@@ -1,4 +1,6 @@
 <?php
+session_start();
+if(isset($_SESSION['name'])){
 include "db_conn.php"; // Include your database connection file
 ?>
 <!DOCTYPE html>
@@ -111,34 +113,30 @@ include "db_conn.php"; // Include your database connection file
       </li>
 
       <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" href="charts.php">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Charts</span></a>
-      </li>
+      </li> -->
       <li class="nav-item">
-        <a class="nav-link" href="deconnexion.html">
+        <a class="nav-link" href="deconnexion.php">
           <i class="fas fa-door-open"></i>
           <span>Deconnexion</span></a>
       </li>
 
       <!-- Divider -->
-      <hr class="sidebar-divider">
+      <!-- <hr class="sidebar-divider"> -->
 
       <!-- Heading -->
-      <div class="sidebar-heading">
+      <!-- <div class="sidebar-heading">
         Problem ?
-      </div>
+      </div> -->
 
       <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <a class="nav-link" href="Help.html">
-          <i class="fa fa-question-circle"></i>
-          <span>Nous-contactez</span></a>
-      </li>
+      
 
       <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
+      <!-- <hr class="sidebar-divider d-none d-md-block"> -->
 
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
@@ -293,3 +291,10 @@ include "db_conn.php"; // Include your database connection file
 </body>
 
 </html>
+
+<?php
+}
+else{
+  header("location:login.php");
+}
+?>
