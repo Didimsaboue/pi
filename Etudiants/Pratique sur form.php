@@ -26,13 +26,12 @@ if(isset($_POST['mp'])){
     $password = $_POST['mp'];
     
     // Query to check if email and password exist in the database
-    $sql = "SELECT * FROM etudiants WHERE Email='$email' AND `password`='$password'";
+    $sql = "SELECT * FROM e_atande WHERE Email='$email' AND `password`='$password'";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         session_start();
          $_SESSION['etudiant'] = $row['id'];
-        $sql = "SELECT * FROM e_atande WHERE Email='$email' AND `password`='$password'";
     $result = $conn->query($sql);
        
         $_SESSION['NNI'] = $row['NNI'];
