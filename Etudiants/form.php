@@ -6,9 +6,6 @@ $db = "Bourssi";
 
 $conn = new mysqli($server, $username, $password, $db);
 session_start();
-$r=true;
-$p=true;
-
 if (!isset($_SESSION['etudiant'])) {
     
     header("Location: login.php");
@@ -16,6 +13,57 @@ if (!isset($_SESSION['etudiant'])) {
 }
 $id=$_SESSION['etudiant'];
 $NNI=$_SESSION['NNI'];
+$r=true;
+$p=true;
+$a=true;
+$sql = "SELECT Demande FROM etudiants WHERE id='$id'";
+$result = $conn->query($sql);
+
+if ($result) {
+	$row = $result->fetch_assoc();
+$a=false;
+$_SESSION['a']=true;
+	// Check if $NNI exists in e_accepte table
+	$sql_e_accepte = "SELECT COUNT(*) AS count FROM e_accepte WHERE NNI='$NNI'";
+	$result_e_accepte = $conn->query($sql_e_accepte);
+
+	if ($result_e_accepte) {
+		$row_e_accepte = $result_e_accepte->fetch_assoc();
+		if ($row_e_accepte['count'] > 0) {
+			$a = false; // Set $r to false if NNI exists in e_accepte
+			$_SESSION['a']=true;
+		} else {
+			// Check conditions if NNI does not exist in e_accepte
+			if (isset($row['Demande']) && ($row['Demande'] !== null && $row['Demande'] !== "")) {
+				$a = false; // Set $r to false if Demande is not empty
+				$_SESSION['a']=true;
+			} else {
+				// Check if NNI exists in e_refuse table
+				$sql_e_refuse = "SELECT NNI FROM e_refuse WHERE NNI='$NNI'";
+				$result_e_refuse = $conn->query($sql_e_refuse);
+				if ($result_e_refuse && $result_e_refuse->num_rows > 0) {
+					$a=false; // Set $z to true if NNI exists in e_refuse
+					$_SESSION['a']=true;
+				}
+			}
+		}
+	} else {
+		// Handle query error for e_accepte table
+		echo "Error fetching e_accepte data: " . $conn->error;
+		// Optionally set $r or handle errors as appropriate
+	}
+} else {
+	// Handle query error for etudiants table
+	echo "Error fetching etudiants data: " . $conn->error;
+	// Optionally set $r or handle errors as appropriate
+}
+
+
+
+
+
+
+
 
 // Assuming $conn is your MySQLi connection object and $id is the student's id
 
@@ -91,35 +139,55 @@ if (isset($_FILES["atestation"]) && $_FILES["atestation"]["error"] == 0) {
 }
 
 
-if (isset($_FILES["cartre"]) && $_FILES["cartre"]["error"] == 0) {
-	
-	$cartre_name = $_FILES["cartre"]["name"];
-	$target_dir = "cartre/"; // Directory where you want to save the image
+if (isset($_FILES["carte"]) && $_FILES["carte"]["error"] == 0) {
+	$Tel=$_POST['Tel'];
+	$cartre_name = $_FILES["carte"]["name"];
+	$target_dir = "carte/"; // Directory where you want to save the image
 	$target_file = $target_dir . basename($cartre_name);
 
 	// Move the uploaded file to the target directory
-	if (move_uploaded_file($_FILES["cartre"]["tmp_name"], $target_file)) {
+	if (move_uploaded_file($_FILES["carte"]["tmp_name"], $target_file)) {
 		// Insert the image name into the database
-		$sql = "UPDATE etudiants SET Carte = '$cartre_name' WHERE id = '$id'";
+		$sql = "UPDATE e_accepte SET Carte = '$cartre_name' WHERE NNI = '$NNI'";
 		// $conn->query($sql);
 		if ($conn->query($sql) === TRUE) {
-			echo "File uploaded successfully.";
+			$yes="yes";
 		} else {
 			echo "Error: " . $sql . "<br>" . $conn->error;
 		}
 	} else {
 		echo "Sorry, there was an error uploading your file.";
 	}
+	$sql = "UPDATE e_accepte SET Tel = '$Tel' WHERE NNI = '$NNI'";
+	$conn->query($sql);
 }
 if (isset($_POST['sb'])) {
 	
 	$Demande=$_POST['Demande'];
+	$Matricule=$_POST['matricule'];
 	$sql = "UPDATE etudiants SET Demande = '$Demande' WHERE NNI = '$NNI'";
 	if ($conn->query($sql) === TRUE) {
 		$ok='ok';;
 	} else {
 		echo "Error: " . $sql . "<br>" . $conn->error;
 	}
+	
+	$Matricule=$_POST['matricule'];
+	$sql = "UPDATE etudiants SET Matricule = '$Matricule' WHERE NNI = '$NNI'";
+	if ($conn->query($sql) === TRUE) {
+		$ok='ok';;
+	} else {
+		echo "Error: " . $sql . "<br>" . $conn->error;
+	}
+	$Depatements=$_POST['departements'];
+	$sql = "UPDATE etudiants SET Specialite = '$Depatements' WHERE NNI = '$NNI'";
+	if ($conn->query($sql) === TRUE) {
+		$ok='ok';;
+	} else {
+		echo "Error: " . $sql . "<br>" . $conn->error;
+
+	}
+	
 }
 ?>
 <!DOCTYPE html>
@@ -162,6 +230,7 @@ if (isset($_POST['sb'])) {
 	          <li class="nav-item"><a href="Bourssii.php" class="nav-link"><span>Author</span></a></li>
 	          <li class="nav-item"><a href="Bourssii.php" class="nav-link"><span>Contact</span></a></li>
 	          <li class="nav-item"><a href="form.php" class="nav-link active"><span>Demande</span></a></li>
+	         <?php if($a==false){ ?> <li class="nav-item"><a href="show.php" class="nav-link "><span>Resultat</span></a></li><?php } ?>
 			  <button class="btn btn-primary py-3 px-4" onclick="window.location.href='deconnexion.php'">Se-Deconnectez</button>
 	        </ul>
 	      </div>
@@ -324,7 +393,7 @@ if (isset($id) && isset($NNI)) {
 
     if ($result) {
         $row = $result->fetch_assoc();
-
+$r=false;
         // Check if $NNI exists in e_accepte table
         $sql_e_accepte = "SELECT COUNT(*) AS count FROM e_accepte WHERE NNI='$NNI'";
         $result_e_accepte = $conn->query($sql_e_accepte);
@@ -402,53 +471,35 @@ if (isset($id) && isset($NNI)) {
 </div>
 <label for="job">Departements:</label>
 <select id="job" name="departements" <?php  if($r==true){?> required <?php  } ?>>
-<optgroup label="SupNum">
-  <option value="Developement systeme informatique">DSI</option>
-  <option value="resaux systeme securite">RSS</option>
-  <option value="multimedia">CNM</option>
-</optgroup>
-<optgroup label="ISCAE">
-  <option value="Developpement informatique">DI</option>
-  <option value="Resaux et telecommunication">RT</option>
-  <option value="Gestion resource humaine">GRH</option>
-  <option value="Banque assurance">Banque assurance</option>
-  <option value="Manangement">Manegement</option>
-  <option value="Finance comptabilite">FC</option>
-  <option value="Informatique du gestion">Informatique du gestion</option>
 
-</optgroup>
-<optgroup label="IP">
-  <option value="Data Science">DS</option>
-  <option value="Resaux">Resaux</option>
-  <option value="Gestion Ressource humaine">GRH</option>
-  <option value="Banque assurance">Banque assurance</option>
-  <option value="Manangement">Manegment</option>
-</optgroup>
-<optgroup label="FST">
-  <option value="football">BG</option>
-  <option value="swimming">Biologie</option>
-  <option value="fishing">Giologie</option>
-  <option value="Finance comptabilite">FC</option>
-</optgroup>
+  <option value="Institut superieure de numerique">SupNum</option>
+  <option value="ISCAE">ISCAE</option>
+  <option value="IP">IP</option>
+
+
+  <option value="Faculte de science technique">FST</option>
+  <option value="Annexe">Annexe</option>
+  <option value="Faculte de medecines ">FM</option>
+  
 </select>
 </fieldset>
-<fieldset <?php $sql = "SELECT NNI FROM e_accepte WHERE NNI='$NNI'"; $result = $conn->query($sql); if ($result && $result->num_rows == 0) { $p = false; ?> class="disabled" <?php }?>>
+<fieldset <?php $sql = "SELECT Carte FROM e_accepte WHERE NNI='$NNI'"; $result = $conn->query($sql); if ($result && $result->num_rows == 0) { $p = false; ?> class="disabled" <?php }?>>
 
 <legend><span class="number">II</span>Finaliser votre profil scholaire</legend>
 <!--Image-->
 <div>
     <div class="mb-4 d-flex ">
-        <img id="selectedImage" src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"
+        <img id="selectedCarte" src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"
         alt="example placeholder" style="width: 300px;" />
     </div>
     <div class="d-flex "style="margin-left:30px">
         <div data-mdb-ripple-init class="btn btn-primary btn-rounded">
-            <label class="form-label text-white m-1" for="customFile1" >Votre Carte d'identite</label>
-            <input type="file" class="form-control d-none" id="customFile1" name="cartre" onchange="displaySelectedImage(event, 'selectedImage')"   />
+            <label class="form-label text-white m-1" for="customFile3" >Votre Carte d'identite</label>
+            <input type="file" class="form-control d-none" id="customFile3" name="carte" onchange="displaySelectedImage(event, 'selectedCarte')" accept="*/*"  />
         </div>
     </div>
 </div><br>
-<input type="text" name="nom" placeholder="Numero telephone *">
+<input type="text" name="Tel" placeholder="Numero telephone *">
 </fieldset>
 <input type="submit" value="Submit" name="sb" <?php     if ( $r == false && $p == false ) { echo "disabled" ; }    ?> />
 </form>
