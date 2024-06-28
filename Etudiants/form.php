@@ -486,7 +486,7 @@ if (isset($id) && isset($NNI)) {
   
 </select>
 </fieldset>
-<fieldset <?php $sql = "SELECT Carte FROM e_accepte WHERE NNI='$NNI'"; $result = $conn->query($sql); if ($result && $result->num_rows == 0) { $p = false; ?> class="disabled" <?php }?>>
+<fieldset <?php $sql = "SELECT Carte FROM e_accepte WHERE NNI='$NNI'"; $result = $conn->query($sql); if ($result && $result->num_rows !== 0) { $p = false; ?> class="disabled" <?php }?>>
 
 <legend><span class="number">II</span>Finaliser votre profil scholaire</legend>
 <!--Image-->
