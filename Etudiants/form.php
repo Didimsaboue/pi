@@ -21,8 +21,8 @@ $result = $conn->query($sql);
 
 if ($result) {
 	$row = $result->fetch_assoc();
-$a=false;
-$_SESSION['a']=true;
+
+
 	// Check if $NNI exists in e_accepte table
 	$sql_e_accepte = "SELECT COUNT(*) AS count FROM e_accepte WHERE NNI='$NNI'";
 	$result_e_accepte = $conn->query($sql_e_accepte);
@@ -31,19 +31,19 @@ $_SESSION['a']=true;
 		$row_e_accepte = $result_e_accepte->fetch_assoc();
 		if ($row_e_accepte['count'] > 0) {
 			$a = false; // Set $r to false if NNI exists in e_accepte
-			$_SESSION['a']=true;
+			
 		} else {
 			// Check conditions if NNI does not exist in e_accepte
 			if (isset($row['Demande']) && ($row['Demande'] !== null && $row['Demande'] !== "")) {
 				$a = false; // Set $r to false if Demande is not empty
-				$_SESSION['a']=true;
+				
 			} else {
 				// Check if NNI exists in e_refuse table
 				$sql_e_refuse = "SELECT NNI FROM e_refuse WHERE NNI='$NNI'";
 				$result_e_refuse = $conn->query($sql_e_refuse);
 				if ($result_e_refuse && $result_e_refuse->num_rows > 0) {
 					$a=false; // Set $z to true if NNI exists in e_refuse
-					$_SESSION['a']=true;
+					
 				}
 			}
 		}
@@ -55,6 +55,7 @@ $_SESSION['a']=true;
 } else {
 	// Handle query error for etudiants table
 	echo "Error fetching etudiants data: " . $conn->error;
+	$a=false;
 	// Optionally set $r or handle errors as appropriate
 }
 
@@ -393,7 +394,7 @@ if (isset($id) && isset($NNI)) {
 
     if ($result) {
         $row = $result->fetch_assoc();
-$r=false;
+
         // Check if $NNI exists in e_accepte table
         $sql_e_accepte = "SELECT COUNT(*) AS count FROM e_accepte WHERE NNI='$NNI'";
         $result_e_accepte = $conn->query($sql_e_accepte);
@@ -424,6 +425,8 @@ $r=false;
         // Handle query error for etudiants table
         echo "Error fetching etudiants data: " . $conn->error;
         // Optionally set $r or handle errors as appropriate
+		$r=false;
+
     }
 } else {
     // Handle case where $id or $NNI is not set

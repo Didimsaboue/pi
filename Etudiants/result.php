@@ -162,7 +162,7 @@ body {
 b{
   <?php 
     if($Statut=="en Attend"){
-      echo "color: #f44336;";
+      echo "color: blue;";
     }
 
     ?>
@@ -191,6 +191,7 @@ b{
       <div class="img-bx">
         <img src="images/<?php echo "$Photo" ?>" alt="img" />
       </div>
+      <?php echo $Photo ?>
       <div class="content" style="margin-top: 20px;">
         <div class="detail">
           <h2 ><u ><?php  echo "$Nom $Prenom" ?></u><br /><br /><br /><span style="font-size: 25px;" >Statut:</span> <b><?php echo "$Statut" ?></b></h2>

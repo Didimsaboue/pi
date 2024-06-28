@@ -15,7 +15,11 @@
 	} else {
 		echo "Sorry, there was an error uploading your file.";
 	} -->
+<?php 
 
+include ("db_conn.php");
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -53,6 +57,52 @@
 	        <ul class="navbar-nav nav ml-auto">
 			<?php
 session_start();
+if(isset($_SESSION['etudiant'])&&isset($_SESSION['NNI'])){
+$id=$_SESSION['etudiant'];
+$NNI=$_SESSION['NNI'];
+$a=true;
+$sql = "SELECT Demande FROM etudiants WHERE id='$id'";
+$result = $conn->query($sql);
+
+if ($result) {
+	$row = $result->fetch_assoc();
+
+
+	// Check if $NNI exists in e_accepte table
+	$sql_e_accepte = "SELECT COUNT(*) AS count FROM e_accepte WHERE NNI='$NNI'";
+	$result_e_accepte = $conn->query($sql_e_accepte);
+
+	if ($result_e_accepte) {
+		$row_e_accepte = $result_e_accepte->fetch_assoc();
+		if ($row_e_accepte['count'] > 0) {
+			$a = false; // Set $r to false if NNI exists in e_accepte
+			
+		} else {
+			// Check conditions if NNI does not exist in e_accepte
+			if (isset($row['Demande']) && ($row['Demande'] !== null && $row['Demande'] !== "")) {
+				$a = false; // Set $r to false if Demande is not empty
+				
+			} else {
+				// Check if NNI exists in e_refuse table
+				$sql_e_refuse = "SELECT NNI FROM e_refuse WHERE NNI='$NNI'";
+				$result_e_refuse = $conn->query($sql_e_refuse);
+				if ($result_e_refuse && $result_e_refuse->num_rows > 0) {
+					$a=false; // Set $z to true if NNI exists in e_refuse
+					
+				}
+			}
+		}
+	} else {
+		// Handle query error for e_accepte table
+		echo "Error fetching e_accepte data: " . $conn->error;
+		// Optionally set $r or handle errors as appropriate
+	}
+} else {
+	// Handle query error for etudiants table
+	echo "Error fetching etudiants data: " . $conn->error;
+	$a=false;
+}
+}
 if(!isset($_SESSION['etudiant'])){
 ?>
 	          <li class="nav-item"><a href="#home-section" class="nav-link"><span>Home</span></a></li>
@@ -63,12 +113,14 @@ if(!isset($_SESSION['etudiant'])){
 			  <button class="btn btn-primary py-3 px-4" onclick="window.location.href='Login.php'">Se-Connectez</button>
 	        <?php }
 			else { ?>
-			<li class="nav-item"><a href="#home-section" class="nav-link"><span>Home</span></a></li>
+			<li class="nav-item"><a href="#home-section" class="nav-link active"><span>Home</span></a></li>
 	          <li class="nav-item"><a href="#about-section" class="nav-link"><span>CNOU</span></a></li>
 	          <li class="nav-item"><a href="#chapter-section" class="nav-link"><span>Bourssi</span></a></li>
 	          <li class="nav-item"><a href="#author-section" class="nav-link"><span>Author</span></a></li>
 	          <li class="nav-item"><a href="#contact-section" class="nav-link"><span>Contact</span></a></li>
-	          <li class="nav-item"><a href="form.php" class="nav-link active"><span>Demande</span></a></li>
+	          <li class="nav-item"><a href="form.php" class="nav-link "><span>Demande</span></a></li>
+			  <?php if($a==false) { ?>
+				<li class="nav-item"><a href="show.php" class="nav-link "><span>Resultat</span></a></li><?php } ?>
 			  <button class="btn btn-primary py-3 px-4" onclick="window.location.href='deconnexion.php'">Se-Deconnectez</button>
 			<?php } ?>
 			</ul>
