@@ -61,7 +61,7 @@ if(isset($_SESSION['etudiant'])&&isset($_SESSION['NNI'])){
 $id=$_SESSION['etudiant'];
 $NNI=$_SESSION['NNI'];
 $a=true;
-$sql = "SELECT Demande FROM etudiants WHERE id='$id'";
+$sql = "SELECT Demande FROM etudiants WHERE NNI='$NNI'";
 $result = $conn->query($sql);
 
 if ($result) {

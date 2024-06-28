@@ -16,7 +16,7 @@ $NNI=$_SESSION['NNI'];
 $r=true;
 $p=true;
 $a=true;
-$sql = "SELECT Demande FROM etudiants WHERE id='$id'";
+$sql = "SELECT Demande FROM etudiants WHERE NNI='$NNI'";
 $result = $conn->query($sql);
 
 if ($result) {
@@ -96,7 +96,7 @@ if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
 	// Move the uploaded file to the target directory
 	if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
 		// Insert the image name into the database
-		$sql = "UPDATE etudiants SET Photo = '$image_name' WHERE id = '$id'";
+		$sql = "UPDATE etudiants SET Photo = '$image_name' WHERE NNI = '$NNI'";
 		// $conn->query($sql);
 		if ($conn->query($sql) === TRUE) {
 			$ok='ok';
@@ -389,7 +389,7 @@ if (isset($_POST['sb'])) {
 // Ensure $id and $NNI are set and not empty
 if (isset($id) && isset($NNI)) {
     // Query to fetch Demande from etudiants table
-    $sql = "SELECT Demande FROM etudiants WHERE id='$id'";
+    $sql = "SELECT Demande FROM etudiants WHERE NNI='$NNI'";
     $result = $conn->query($sql);
 
     if ($result) {

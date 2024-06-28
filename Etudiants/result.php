@@ -63,7 +63,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(#03a9f4, #03a9f4 45%, #fff 45%, #fff 100%);
+  /* background: linear-gradient(#03a9f4, #03a9f4 45%, #fff 45%, #fff 100%); */
 }
 
 .card {
@@ -72,7 +72,7 @@ body {
   height: 400px;
   background: #fff;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(#03a9f4, #03a9f4 45%, #fff 45%, #fff 100%);
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(15px);
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
@@ -177,6 +177,24 @@ b{
     }
     ?>
 }
+.card{
+  <?php 
+    if($Statut=="en Attend"){
+      echo "background: linear-gradient(#03a9f4, #03a9f4 45%, #fff 45%, #fff 100%);";
+    }
+
+    ?>
+  <?php 
+    if($Statut=="Accepter"){
+    echo"  background: linear-gradient(#00ff00, #00ff00 45%, #fff 45%, #fff 100%);";
+    }
+    ?>
+  <?php 
+    if($Statut=="Refusee"){
+      echo "background: linear-gradient(#ff0000, #ff0000 45%, #fff 45%, #fff 100%);";
+    }
+    ?>
+}
 
 
 
@@ -191,7 +209,7 @@ b{
       <div class="img-bx">
         <img src="images/<?php echo "$Photo" ?>" alt="img" />
       </div>
-      <?php echo $Photo ?>
+      
       <div class="content" style="margin-top: 20px;">
         <div class="detail">
           <h2 ><u ><?php  echo "$Nom $Prenom" ?></u><br /><br /><br /><span style="font-size: 25px;" >Statut:</span> <b><?php echo "$Statut" ?></b></h2>
