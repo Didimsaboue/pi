@@ -386,7 +386,7 @@ mysqli_close($conn);
       xkey: 'category',
       ykeys: ['count'],
       labels: ['Nombre des etudients'],
-      barColors: ['rgb(51, 90, 205)'],
+      barColors: ['#2196F3','#4CAF50','#F44336'],
       resize: true
     });
 
