@@ -212,7 +212,7 @@ include "db_conn.php"; // Include your database connection file
                   <td><?php echo $row["Prenom"] ?></td>
                   <td><?php echo $row["Email"] ?></td>
                   <td><?php echo $row["Tel"] ?></td>
-                  <td><?php echo $row["Carte"] ?></td>
+                  <td><a href="../Etudiants/carte/<?php echo $row["Carte"] ?>" target="_blank"><i style="color:blue" class="fa-solid fa-eye fs-5"></i></a></td>
                   <td><a href="../Etudiants/atestations/<?php echo $row["Attestation"] ?>" target="_blank"><i style="color:blue" class="fa-solid fa-eye fs-5"></i></a></td>
                   <td>
                     <button onclick="openModal(
