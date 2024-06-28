@@ -59,7 +59,10 @@ mysqli_close($conn);
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <style>
@@ -70,6 +73,7 @@ mysqli_close($conn);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
     border-radius: 8px;
     
+    
     }
     #bar-chart {
       height: 350px;
@@ -77,6 +81,7 @@ mysqli_close($conn);
       background-color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
     border-radius: 8px;
+    
     
     
     }
@@ -385,9 +390,19 @@ mysqli_close($conn);
       data: data,
       xkey: 'category',
       ykeys: ['count'],
-      labels: ['Nombre des etudients'],
-      barColors: ['#2196F3','#4CAF50','#F44336'],
-      resize: true
+      labels: ['Nombre '],
+      barColors: ['#2196F3', '#4CAF50', '#F44336'],
+      resize: true,
+      gridTextColor: '#000',
+      gridTextSize: 12,
+      hideHover: 'auto',
+      xLabelMargin: 10,
+      xLabelAngle: 45,
+      title: 'Répartition des étudiants par catégorie',
+      xLabelColor: '#333',
+      yLabelColor: '#333',
+      gridLineColor: '#ccc',
+      gridTextFamily: 'Arial'
     });
 
                     </script>
